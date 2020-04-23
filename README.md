@@ -26,10 +26,17 @@ The Keptn Jenkins Shared Library provides a lot of helper functions to connect y
 1. A Jenkins Server with the installed [Keptn Jenkins Shared Library](https://github.com/keptn-sandbox/keptn-jenkins-library). Make sure you follow all instructions on that GitHub page
 2. Create a new Jenkins Pipeline and reference or copy [keptnevaluation.Jenkinsfile](./usecases/uc1_qualitygates/keptnevaluation.Jenkinsfile). You can call it "Keptn Quality Gate Evaluation"
 
-This example comes with a pre-defined set of SLIs and SLOs for Dynatrace. If you want to use a different monitoring tool simply change the SLI.yaml to e.g: pull this data from Prometheus. If you want to just follow along with Dynatrace then make sure you have any type of application deployed and monitored by a Dynatrace OneAgent. If you don't have Dynatrace yet just sign up for the [Dynatrace SaaS trial](http://bit.ly/dtsaastrial).
+This example comes with a pre-defined set of SLIs and SLOs for Dynatrace. If you want to use a different monitoring tool simply change the SLI.yaml to e.g: pull this data from Prometheus. 
+
+*Pre-Reqs With Dynatrace*
+If you want to just follow along with Dynatrace then make sure you have any type of application deployed and monitored by a Dynatrace OneAgent. If you don't have Dynatrace yet just sign up for the [Dynatrace SaaS trial](http://bit.ly/dtsaastrial).
+You also need to have the configured Keptn to use Dynatrace by installing the Dynatrace-Service. If you havent done it yet - please follow the doc: https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/
+
+*Tagging your application in Dynatrace*
 My SLI.yaml uses tags to identify the service you want to pull your SLI data from. The name of the tag can be passed to our Jenkins Pipeline as a parameter. The default value is "evalservice" which means you only need to place a tag on your service you want to have evaluated with that name. Like shown in the following screenshot:
 ![](./images/evalservice_tag_dynatrace.png)
 
+*Execute the pipeline*
 Now we are good to go to execute the Jenkins Pipeline to trigger our Quality Gates:
 1. If this is the first time you execute the pipeline it will fail as Jenkins hasnt parsed the parameters yet and therefore runs into an error on a choice parameter
 2. Once failed - now click on "Build with Parameters" and go with the following defaults:
