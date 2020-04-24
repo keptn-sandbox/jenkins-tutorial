@@ -99,7 +99,14 @@ And the heatmap in the Keptns Bridge will now inlcude all these additional metri
 
 ## 2. Integrate Keptn's Performance Testing as a Self-Service in your Jenkins Pipeline
 
-TBD
+Detailed descrition to follow soon. But this pipeline [keptnperftesting.Jenkinsfile](./usecases/uc1_qualitygates/keptnperftesting.Jenkinsfile) triggers the full Keptn Performance as a Self Service Use Case where Keptn 
+1. Executes Tests against an application you have deployed
+2. Evaluates SLIs/SLOs after the test is finished
+
+![](./images/perfaaservice_firstsuccessfullrun.png)
+
+Keptn - thanks to the *dynatrace-service* integration will also send all necessary events to Dynatrace as the test execution happens:
+![](./images/perfaaservice_dynatraceevents.png)
 
 ## 3. Keptn invokes Jenkins pipelines for Deployment 
 
