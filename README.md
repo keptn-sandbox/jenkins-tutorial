@@ -19,16 +19,20 @@ If you have built your own scripts or plugins please let us know. Feel free to a
 
 ## 1. Integrate Keptn's SLI/SLO-based Quality Gates
 
-This is a straight forward use case where your Jenkins Pipeline simply triggers an SLI/SLO-based Quality Gate Evaluation in Keptn. This can either be done through the Keptn CLI or the API. 
+This is a straight forward use case where your Jenkins Pipeline simply triggers an SLI/SLO-based Quality Gate Evaluation in Keptn. This can either be done through the Keptn CLI or the API. To make this easier we can also use the [Keptn Jenkins Shared Library](https://github.com/keptn-sandbox/keptn-jenkins-library)!
 
-**Example 1: Integrate via Keptn Jenkins Shared Pipeline Library**
+**Pre-Req: Install Keptn Jenkins Library and Create Sample Pipeline**
 The Keptn Jenkins Shared Library provides a lot of helper functions to connect your Jenkins Pipeline with a Keptn Project and allows you to easily trigger the Keptn Quality Gate. All you need is
 1. A Jenkins Server with the installed [Keptn Jenkins Shared Library](https://github.com/keptn-sandbox/keptn-jenkins-library). Make sure you follow all instructions on that GitHub page
-2. Create a new Jenkins Pipeline and reference or copy [keptnevaluation.Jenkinsfile](./usecases/uc1_qualitygates/keptnevaluation.Jenkinsfile). You can call it "Keptn Quality Gate Evaluation"
+2. Create a new Jenkins Pipeline and call it e.g: "Keptn Quality Gate Evaluation"
+![](./images/create_evalpipeline.png)
+3. Now either SCM reference or copy/paste [keptnevaluation.Jenkinsfile](./usecases/uc1_qualitygates/keptnevaluation.Jenkinsfile) into your pipeline definition
+![](./images/copy_evalpipeline.png)
 
-This example comes with a pre-defined set of SLIs and SLOs for Dynatrace. If you want to use a different monitoring tool simply change the SLI.yaml to e.g: pull this data from Prometheus. 
+**SLI Monitoring Tool Information**
+This example comes with a pre-defined set of SLIs and SLOs for Dynatrace. If you want to use a different monitoring tool simply change the SLI.yaml to e.g: pull this data from Prometheus. To find out more about setting up Prometheus and defining SLIs for Prometheus to be used with Keptn please check out the [Quality Gate Tutorials for Prometheus](https://tutorials.keptn.sh/?cat=prometheus).
 
-*Pre-Reqs With Dynatrace*
+**Pre-Reqs With Dynatrace**
 If you want to just follow along with Dynatrace then make sure you have any type of application deployed and monitored by a Dynatrace OneAgent. If you don't have Dynatrace yet just sign up for the [Dynatrace SaaS trial](http://bit.ly/dtsaastrial).
 You also need to have the configured Keptn to use Dynatrace by installing the Dynatrace-Service. If you havent done it yet - please follow the doc: https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/
 
@@ -36,17 +40,26 @@ You also need to have the configured Keptn to use Dynatrace by installing the Dy
 My SLI.yaml uses tags to identify the service you want to pull your SLI data from. The name of the tag can be passed to our Jenkins Pipeline as a parameter. The default value is "evalservice" which means you only need to place a tag on your service you want to have evaluated with that name. Like shown in the following screenshot:
 ![](./images/evalservice_tag_dynatrace.png)
 
-*Execute the pipeline*
+**Action: Execute the pipeline**
 Now we are good to go to execute the Jenkins Pipeline to trigger our Quality Gates:
-1. If this is the first time you execute the pipeline it will fail as Jenkins hasnt parsed the parameters yet and therefore runs into an error on a choice parameter
-2. Once failed - now click on "Build with Parameters" and go with the following defaults:
+1. The first execution of the pipeline will fail with an error such as "no property monitoring" defined. This is because Jenkins by default doesnt scan the pipeline for parameters and there are several that have to be specified. THATS OK :-)
+2. Once failed, refresh the Jenkins pipeline view and now click on "Build with Parameters" and go with the following defaults:
 ![](./images/pipeline_evaluation_executewithparameters.png)
 
+After the first successful run is done you should see your Jenkins Pipeline View like this:
+![](./images/evalpipeline_firstsuccessfullrun.png)
 
+In the Console Output you can find a deep link to the Keptns Bridge for this quality gate evaluation:
+![](./images/openbridgelink_consoleoutput.png)
 
-**Example 2: Integration via Jenkins httprequest plugin**
-If you dont want to use the Jenkins Shared Library you can do it by calling the Keptn API directly in your pipeline!
-One way of doing this is shown in the sample [Jenkins Pipeline file](./usecases/uc1_qualitygates/httprequest.Jenkinsfile) that [Leon Van Zyl](https://github.com/leonvzGit) contributed to this tutorial. Leon has shared a part of a Jenkins Pipeline that executes a Gatling test, sends a Keptn start-evaluation event for the timeframe of the test execution and then waits for the evaluation to be done!
+The heatmap will look something like this - showing all the results of all your runs with all details on the individual SLIs & SLO evaluation results. I took my screenshot after I ran a couple of tests already. So - the more often you run you pipeline the more results you will get as each evaluation you trigger will show up here:
+![](./images/evalpipeline_heatmap.png)
+
+Additionally to exploring the results in the Bridge you can also explore the raw data in your Jenkins Pipeline as the Jenkins Shared Library has archived not only SLI & SLO but also the keptnContext as well as the evaluation result JSON output:
+![](./images/evalpipeline_jenkinsartifacts.png)
+
+**Summary**
+This sample pipeline shows you how you can trigger an evaluation for a specific timeframe! Take this as an example and integrate this into your own delivery pipeline!
 
 ## 2. Integrate Keptn's Performance Testing as a Self-Service in your Jenkins Pipeline
 
@@ -60,3 +73,11 @@ TBD
 ## 4. Keptn invokes Jenkins pipelines for Testing
 
 TBD
+
+
+
+## 5. Further examples
+
+**Example 1: Simple Integration via Jenkins httprequest plugin**
+If you dont want to use the Jenkins Shared Library you can do it by calling the Keptn API directly in your pipeline!
+One way of doing this is shown in the sample [Jenkins Pipeline file](./usecases/uc1_qualitygates/httprequest.Jenkinsfile) that [Leon Van Zyl](https://github.com/leonvzGit) contributed to this tutorial. Leon has shared a part of a Jenkins Pipeline that executes a Gatling test, sends a Keptn start-evaluation event for the timeframe of the test execution and then waits for the evaluation to be done!
