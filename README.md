@@ -17,7 +17,7 @@ If you have built your own scripts or plugins please let us know. Feel free to a
 | Keptn invokes Jenkins pipelines for Deployment | If you have Jenkins pipelines that deploys your application you can use Keptn to orchestrate the end-2-end continuos delivery process but invoking your Jenkins Pipeline to do the actual deployment of the artifact/app |
 | Keptn invokes Jenkins pipelines for Test Execution | If you have Jenkins pipelines that tests your application you can use Keptn to orchestrate the end-2-end continuos delivery process but invoking your Jenkins Pipeline to do the actual testing of the artifact/app |
 
-## 1. Integrate Keptn's SLI/SLO-based Quality Gates
+## 1.1 Integrate Keptn's SLI/SLO-based Quality Gates
 
 This is a straight forward use case where your Jenkins Pipeline simply triggers an SLI/SLO-based Quality Gate Evaluation in Keptn. This can either be done through the Keptn CLI or the API. To make this easier we can also use the [Keptn Jenkins Shared Library](https://github.com/keptn-sandbox/keptn-jenkins-library)!
 
@@ -60,6 +60,42 @@ Additionally to exploring the results in the Bridge you can also explore the raw
 
 **Summary**
 This sample pipeline shows you how you can trigger an evaluation for a specific timeframe! Take this as an example and integrate this into your own delivery pipeline!
+
+## 1.2 Integrate Keptn's SLI/SLO-based Quality Gates - With Simple Testing Tool in Pipeline
+
+**Pre-Req: Install Keptn Jenkins Library and Create Sample Pipeline**
+This is an extended version of example 1.1 where the pipeline also has a very simple load-testing capability built-into one of the stages.
+The setup is similar to the previous pipeline. You need
+1. A Jenkins Server with the installed [Keptn Jenkins Shared Library](https://github.com/keptn-sandbox/keptn-jenkins-library). Make sure you follow all instructions on that GitHub page
+2. Create a new Jenkins Pipeline and call it e.g: "Simple Load Test with Keptn Quality Gates"
+![](./images/create_simpletestpipeline.png)
+3. Now either SCM reference or copy/paste [keptnevaluatewithtest.Jenkinsfile](./usecases/uc1_qualitygates/keptnevaluatewithtest.Jenkinsfile) into your pipeline definition
+![](./images/copy_simpletestpipeline.png)
+
+**Pre-Reqs With Dynatrace or switch to Prometheus**
+This tutorial has the same pre-reqs on Dynatrace as the 1.1. So - please make sure you Keptn either has the Dynatrace Service and Dynatrace SLI Provider installed and configured or change it to Prometheus.
+
+*Tagging your application in Dynatrace*
+For this example the default value of the Keptn service name which will be used in my SLI.yaml to identify the Dynatrace monitored service is different. It is called *testservice*. So - go ahead and make sure the service in Dynatrace you want to pull SLI metrics from has the *testservice* tag on it. As shown here in my case:
+![](./images/simpletestpipeline_tag_dynatrace.png)
+
+*Calculated Service Metrics for Test Execution*
+The pipeline comes with two types of SLI.yamls. One with basic metrics and one with perftest metrics. If you use the perftest version the SLI.yaml contains additional Dynatrace Calculated Service metrics that provide data such as "Failure Rate split by Test Name" or "Number of Service Calls split by Test Name". This shows you the power of the Dynatrace Calculated Service metrics in combination with testing tools that can pass context such as Test Name, Test Script, Load Test Name ... to Dynatrace as part of the HTTP Request. 
+If you want to use that perftest SLI make sure you have the necessary calculated service metrics created. If you dont want to create them yourself - here is a script you can execute which automates that creation: [createTestStepCalculatedMetrics.sh](./scripts/createTestStepCalculatedMetrics). You can call it like this
+```
+./createTestStepCalculatedMetrics.sh CONTEXTLESS testservice
+```
+This script will create 4 calculated service metrics for those Dynatrace Services with the tag testservice on it. If you want to have these calculated service metrics available for other services as well simply define it for a broader set of tag. You can also edit these metric definitions in the Dynatrace UI to expand the scope for other services!
+
+**Action: Execute the pipeline**
+Same as with 1.1. The first pipeline run will fail as Jenkins doesnt automatically parse the parameters which doesnt give you the "run with Parameters" option. Once you have that option after refreshing the screen after the first failed run you can run the pipeline with the default parameters BUT PLEASE - make sure you change it to your own application that you are monitoring :-)
+
+Once the execution is done you will see a Jenkins Output like this:
+![](./images/simpletestpipeline_overview.png)
+
+And the heatmap in the Keptns Bridge will now inlcude all these additional metrics specified in the perftest SLI:
+![](./images/simpletestpipeline_heatmap.png)
+
 
 ## 2. Integrate Keptn's Performance Testing as a Self-Service in your Jenkins Pipeline
 
