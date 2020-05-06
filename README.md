@@ -159,19 +159,36 @@ There is a new version of *dynatrace-service* available that you can try for Kep
 Now - lets explore some of these events the *dynatrace-service* sends over:
 ![](./images/perfaaservice_dynatraceevents.png)
 
+## 3. Jenkins Builds a Container and triggers Keptn for Progressive Delivery
 
-## 3. Keptn invokes Jenkins pipelines for Deployment 
+If you have a Jenkins Pipeline that builds your code, packages it in a container and uploads it to a container registry then you can use Keptn for Progressive Delivery of that artifact (=container image). All you need is a configured Keptn Project where you have already onboarded your services including Helm charts, SLIs/SLOs, tests ...
+In order to setup such a Keptn project please follow one of the [Full Keptn Tour Tutorials](https://tutorials.keptn.sh/)
+
+Normally you would trigger Keptn through the Keptn CLI or the API and inform it about a new artifact, e.g:
+```
+keptn send event new-artifact --project=PROJECTNAME --service=SERVICENAME --image=docker.io/keptnexamples/carts --tag=0.9.1
+```
+The [Keptn Jenkins Shared Library](https://github.com/keptn-sandbox/keptn-jenkins-library) allows you to trigger the same workflow from your Jenkins Pipeline.
+If you want to give this a try you can either SCM reference or copy/paste [keptndelivery.Jenkinsfile](./usecases/uc2_progressivedelivery/keptndelivery.Jenkinsfile) into your pipeline definition
+
+If you execute it you will see that this pipeline requests all the information you would normally pass to *keptn send event new-artifact*:
+![](./images/pipeline_delivery_executewithparameters.png)
+
+Once you execute that pipeline it will trigger a full Keptn delivery workflow which - depending on how many stages your have defined in your shipyard and how long the tests take to execute - may take a couple of minutes:
+![](./images/deliverypipeline_firstsuccessfulrun.png)
+
+## 4. Keptn invokes Jenkins pipelines for Deployment 
 
 The *jenkins-service* allows you to invoke any Jenkins Pipeline when handling specific Keptn events, e.g: deploy, test, evaluation, promote or notify.
 A more detailed tutorial is coming shortly - in the meantime - have a look at the [Jenkins Service for Keptn](https://github.com/keptn-sandbox/jenkins-service/)
 
 
-## 4. Keptn invokes Jenkins pipelines for Testing
+## 5. Keptn invokes Jenkins pipelines for Testing
 
 The *jenkins-service* allows you to invoke any Jenkins Pipeline when handling specific Keptn events, e.g: deploy, test, evaluation, promote or notify.
 A more detailed tutorial is coming shortly - in the meantime - have a look at the [Jenkins Service for Keptn](https://github.com/keptn-sandbox/jenkins-service/)
 
-## 5. Further examples
+## 6. Further examples
 
 **Example 1: Simple Integration via Jenkins httprequest plugin**
 If you dont want to use the Jenkins Shared Library you can do it by calling the Keptn API directly in your pipeline!
