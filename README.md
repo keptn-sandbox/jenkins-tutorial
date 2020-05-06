@@ -8,6 +8,12 @@ The goal of this repository is to describe integration use cases of Keptn with J
 
 If you have built your own scripts or plugins please let us know. Feel free to add your custom scripts to the scripts subfolder by issuing a Pull Request (PR)
 
+## Watch the tutorial webinar on YouTube
+
+As part of a Keptn Community Webinar we walked through most of these use cases (click image to play video):
+
+[![Level Up your Jenkins with Keptn Video Tutorial](https://img.youtube.com/vi/VYRdirdjOAg/0.jpg)](https://www.youtube.com/watch?v=VYRdirdjOAg "Level Up your Jenkins with Keptn Video Tutorial")
+
 ## Use Case Overview (work in progress)
 
 | Use Case | Description |
