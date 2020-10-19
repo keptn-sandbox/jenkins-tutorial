@@ -339,6 +339,34 @@ hm.add(new org.apache.jmeter.protocol.http.control.Header(&quot;x-dynatrace-test
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
+      <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Dynatrace Mint Backend Listener" enabled="true">
+        <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="dynatraceApiToken" elementType="Argument">
+              <stringProp name="Argument.name">dynatraceApiToken</stringProp>
+              <stringProp name="Argument.value">${DT_API_TOKEN}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="transactionDimensions" elementType="Argument">
+              <stringProp name="Argument.name">transactionDimensions</stringProp>
+              <stringProp name="Argument.value">keptnProject=${KEPTN_PROJECT},keptnService=${KEPTN_SERVICE},keptnStage=${KEPTN_STAGE},keptnTestStrategy=${KEPTN_TESTSTRATEGY}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="dynatraceMetricIngestUrl" elementType="Argument">
+              <stringProp name="Argument.name">dynatraceMetricIngestUrl</stringProp>
+              <stringProp name="Argument.value">https://${__P(DT_TENANT,&quot;&quot;)}/api/v2/metrics/ingest</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="testDimensions" elementType="Argument">
+              <stringProp name="Argument.name">testDimensions</stringProp>
+              <stringProp name="Argument.value">keptnProject=${KEPTN_PROJECT},keptnService=${KEPTN_SERVICE},keptnStage=${KEPTN_STAGE},keptnTestStrategy=${KEPTN_TESTSTRATEGY}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </elementProp>
+        <stringProp name="classname">com.dynatrace.jmeter.plugins.MintBackendListener</stringProp>
+      </BackendListener>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
