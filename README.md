@@ -1,12 +1,15 @@
 # Tutorials and Samples for Integrating Jenkins with Keptn
 
-| Author | Keptn-Version |
-| ------ | ------------- |
-| grabnerandi | 0.6.1 |
-
-The goal of this repository is to describe integration use cases of Keptn with Jenkins. As there are many integration scenarios and also different ways to integrate Keptn with Jenkins we also collect different approaches, scripts, plugins, ... that the community is building to support these use cases.
+The goal of this repository is to describe integration use cases of Keptn with Jenkins. As there are many integration scenarios and also different ways to integrate Keptn with Jenkins we also collect different approaches, scripts, plugins, ... that the community is building to support these use cases. In addition, we are providing a Jenkins shared library called [keptn-jenkins-library](https://github.com/keptn-sandbox/keptn-jenkins-library) which helps in easily integrating Keptn API calls into your Jenkinsfile.
 
 If you have built your own scripts or plugins please let us know. Feel free to add your custom scripts to the scripts subfolder by issuing a Pull Request (PR)
+
+Please note that the examples in this repository have been created with Keptn 0.6.x in mind. They should work with newer versions but might require some changes.
+
+However, before using the code from this repository, please verify
+
+* which version of Keptn you are using (e.g., `keptn version`), and
+* which version of the [keptn-jenkins-library](https://github.com/keptn-sandbox/keptn-jenkins-library).
 
 ## Watch the tutorial webinar on YouTube
 
