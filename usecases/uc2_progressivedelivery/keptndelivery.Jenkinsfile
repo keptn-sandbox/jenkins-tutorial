@@ -16,7 +16,7 @@ node {
         echo "Progressive Delivery: Triggering Keptn to deliver ${params.Image}"
 
         // send deployment finished to trigger tests
-        def keptnContext = keptn.sendConfigurationChangedEvent project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", image:"${params.Image}" 
+        def keptnContext = keptn.delivery.triggered project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", image:"${params.Image}" 
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
     }
