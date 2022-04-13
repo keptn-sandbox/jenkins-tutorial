@@ -1,0 +1,53 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: glass-db-mongodata
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glass-db
+  labels:
+    app: glass-db
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: glass-db
+  template:
+    metadata:
+      labels:
+        app: glass-db
+        deployment: glass-db
+        app.kubernetes.io/name: {{ .Values.keptn.service }}
+        app.kubernetes.io/instance: "{{ .Values.keptn.service }}-{{ .Values.keptn.deployment }}"
+        app.kubernetes.io/component: database
+        app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
+        app.kubernetes.io/managed-by: Keptn
+        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}          
+    spec:
+      containers:
+      - name: glass-db 
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/db
+          name: glass-db-mongodata
+      restartPolicy: Always
+      volumes:
+      - name: glass-db-mongodata
+        persistentVolumeClaim:
+          claimName: glass-db-mongodata
