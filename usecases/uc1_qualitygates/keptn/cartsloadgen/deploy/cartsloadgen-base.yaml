@@ -25,9 +25,9 @@ spec:
         imagePullPolicy: Always
         env:
           - name: KEPTN_DOMAIN
-            value: svc.cluster.local
+            value: 206.189.248.116.nip.io
           - name: CARTS_STAGES
-            value: "carts.sockshop-dev carts-primary.sockshop-staging carts-primary.sockshop-production"
+            value: "glass.adidas-dev glass.adidas-staging glass.adidas-production"
           - name: ITEM_ID
             value: "03fef6ac-1896-4ce8-bd69-b798f85c6e0b"
           - name: CARTS_ID

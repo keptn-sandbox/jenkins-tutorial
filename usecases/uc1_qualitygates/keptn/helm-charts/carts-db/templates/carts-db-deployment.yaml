@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: glass-db-mongodata
+  name: carts-db-mongodata
 spec:
   accessModes:
   - ReadWriteOnce
@@ -14,21 +14,21 @@ status: {}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: glass-db
+  name: carts-db
   labels:
-    app: glass-db
+    app: carts-db
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: glass-db
+      app: carts-db
   template:
     metadata:
       labels:
-        app: glass-db
-        deployment: glass-db
+        app: carts-db
+        deployment: carts-db
         app.kubernetes.io/name: {{ .Values.keptn.service }}
         app.kubernetes.io/instance: "{{ .Values.keptn.service }}-{{ .Values.keptn.deployment }}"
         app.kubernetes.io/component: database
@@ -37,7 +37,7 @@ spec:
         app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}          
     spec:
       containers:
-      - name: glass-db 
+      - name: carts-db 
         image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         ports:
@@ -45,9 +45,9 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /data/db
-          name: glass-db-mongodata
+          name: carts-db-mongodata
       restartPolicy: Always
       volumes:
-      - name: glass-db-mongodata
+      - name: carts-db-mongodata
         persistentVolumeClaim:
-          claimName: glass-db-mongodata
+          claimName: carts-db-mongodata
