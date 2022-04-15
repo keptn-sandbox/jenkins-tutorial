@@ -6,7 +6,7 @@ node {
         parameters([
          string(defaultValue: 'adidas', description: 'Name of your Keptn Project you have setup for progressive delivery', name: 'Project', trim: false), 
          string(defaultValue: 'staging', description: 'First stage you want to deploy into', name: 'Stage', trim: false), 
-         string(defaultValue: 'carts', description: 'Name of the service you provide a configuration change for', name: 'Service', trim: false),
+         string(defaultValue: 'glass', description: 'Name of the service you provide a configuration change for', name: 'Service', trim: false),
          string(defaultValue: 'docker.io/keptnexamples/carts:0.13.1', description: 'Name of the service you provide a configuration change for', name: 'Image', trim: false),
         ])
     ])
