@@ -21,8 +21,8 @@ node {
         keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", keptnConfigureMonitoring:"prometheus" // , shipyard:'shipyard.yaml'
 
         // Upload all the files
-        keptn.keptnAddResources('keptn/sli.yaml','prometheus/sli.yaml')
-        keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
+        // keptn.keptnAddResources('keptn/sli.yaml','prometheus/sli.yaml')
+        // keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
     }
 
     stage('Trigger Delivery') {
