@@ -12,24 +12,16 @@ node {
     ])
 
     stage('Initialize Keptn') {
-        keptn.downloadFile("https://raw.githubusercontent.com/bayramka/keptn-jenkins-tutorial/master/usecases/uc2_progressivedelivery/keptn/shipyard.yaml", 'keptn/shipyard.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/bayramka/keptn-jenkins-tutorial/master/usecases/uc2_progressivedelivery/keptn/slo.yaml", 'keptn/slo.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/bayramka/keptn-jenkins-tutorial/master/usecases/uc2_progressivedelivery/keptn/prometheus/sli.yaml", 'keptn/sli.yaml')
-        archiveArtifacts artifacts:'keptn/**/*.*'
 
         // Initialize the Keptn Project - ensures the Keptn Project is created with the passed shipyard
         keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", keptnConfigureMonitoring:"prometheus" // , shipyard:'shipyard.yaml'
 
-        // Upload all the files
-        // keptn.keptnAddResources('keptn/sli.yaml','prometheus/sli.yaml')
-        // keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
     }
 
     stage('Trigger Delivery') {
         echo "Progressive Delivery: Triggering Keptn to deliver ${params.Image}"
 
         // send deployment finished to trigger tests
-        // def keptnContext = keptn.sendConfigurationChangedEvent project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", image:"${params.Image}" 
         def keptnContext = keptn.sendDeliveryTriggeredEvent project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", image:"${params.Image}"
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
