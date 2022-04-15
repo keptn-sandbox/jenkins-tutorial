@@ -30,7 +30,7 @@ node {
 
         // send deployment finished to trigger tests
         // def keptnContext = keptn.sendConfigurationChangedEvent project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", image:"${params.Image}" 
-        def keptnContext = keptn.sendDeliveryTriggeredEvent image:"${params.Image}"
+        def keptnContext = keptn.sendDeliveryTriggeredEvent project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", image:"${params.Image}"
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
     }
