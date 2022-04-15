@@ -12,18 +12,16 @@ node {
     ])
 
     stage('Initialize Keptn') {
-        // keptn.downloadFile("https://raw.githubusercontent.com/keptn-sandbox/performance-testing-as-selfservice-tutorial/master/shipyard.yaml", 'keptn/shipyard.yaml')
-        // keptn.downloadFile("https://raw.githubusercontent.com/keptn-sandbox/jenkins-tutorial/master/usecases/uc1_qualitygates/keptn/dynatrace/dynatrace.conf.yaml", 'keptn/dynatrace/dynatrace.conf.yaml')
-        // keptn.downloadFile("https://raw.githubusercontent.com/keptn-sandbox/jenkins-tutorial/master/usecases/uc1_qualitygates/keptn/slo_${params.SLI}.yaml", 'keptn/slo.yaml')
-        // keptn.downloadFile("https://raw.githubusercontent.com/keptn-sandbox/jenkins-tutorial/master/usecases/uc1_qualitygates/keptn/dynatrace/sli_${params.SLI}.yaml", 'keptn/sli.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/bayramka/keptn-jenkins-tutorial/master/usecases/uc2_progressivedelivery/keptn/shipyard.yaml", 'keptn/shipyard.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/bayramka/keptn-jenkins-tutorial/master/usecases/uc2_progressivedelivery/keptn/slo.yaml", 'keptn/slo.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/bayramka/keptn-jenkins-tutorial/master/usecases/uc2_progressivedelivery/keptn/prometheus/sli.yaml", 'keptn/sli.yaml')
         archiveArtifacts artifacts:'keptn/**/*.*'
 
         // Initialize the Keptn Project - ensures the Keptn Project is created with the passed shipyard
         keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", keptnConfigureMonitoring:"prometheus", shipyard:'shipyard.yaml'
 
         // Upload all the files
-        // keptn.keptnAddResources('keptn/dynatrace/dynatrace.conf.yaml','dynatrace/dynatrace.conf.yaml')
-        // keptn.keptnAddResources('keptn/sli.yaml','dynatrace/sli.yaml')
+        // keptn.keptnAddResources('keptn/sli.yaml','prometheus/sli.yaml')
         // keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
     }
 
