@@ -40,10 +40,13 @@ node {
       }
 	  
 	     stage('Download Helm') {
+	          withCredentials([string(credentialsId: 'doctl', variable: 'doctl')]) {
             sh 'curl -LO https://github.com/digitalocean/doctl/releases/download/v1.72.0/doctl-1.72.0-linux-amd64.tar.gz'
             sh 'tar xvf doctl-1.72.0-linux-amd64.tar.gz'
-            sh './doctl auth init -t "dop_v1_ed55c492c72fad44b3faaadd56bfecdca076453a7a68e9a60697b942cbab364c"'
+            sh './doctl auth init -t $doctl'
       }
+	         
+	     }
       
       stage('Test Image') {
            sh 'echo "Testing..."'
