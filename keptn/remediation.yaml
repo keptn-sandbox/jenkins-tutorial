@@ -9,7 +9,7 @@ spec:
         - action: restart
           name: restart
           description: Restart Pod
-    - problemType: response_time_p90
+    - problemType: response_time_p95
       actionsOnOpen:
         - action: scaling
           name: scaling
