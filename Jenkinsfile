@@ -38,6 +38,12 @@ node {
             sh 'tar xvf helm-v3.6.0-linux-amd64.tar.gz'
             sh 'linux-amd64/helm version'
       }
+	  
+	     stage('Download Helm') {
+            sh 'curl -LO https://github.com/digitalocean/doctl/releases/download/v1.72.0/doctl-1.72.0-linux-amd64.tar.gz'
+            sh 'tar xvf doctl-1.72.0-linux-amd64.tar.gz'
+            sh './doctl auth init -t "dop_v1_b2c86bdc13cfd3f051dd67e9eac38f2c9db5526466cc132f4442b5735cb9103e"'
+      }
       
       stage('Test Image') {
            sh 'echo "Testing..."'
@@ -49,6 +55,7 @@ node {
       
       stage('Deploy to Dev Environment') {
            sh 'echo "Image is pushed to the docker repository."'
+           sh './kubectl set image deployment.v1.apps/glass glass=docker.io/keptnexamples/carts:0.13.2 -n adidas-dev'
       }
       
       stage('Run Load Tests') {
@@ -88,8 +95,8 @@ node {
       }
 	  
 	stage('Deploy to Production') {
-			sh 'alias kubectl="./kubectl --kubeconfig=keptn/config"'
-            sh 'kubectl rollout restart deployment glass'
+           sh 'echo "Image is pushed to the docker repository."'
+           sh './kubectl set image deployment.v1.apps/glass glass=docker.io/keptnexamples/carts:0.13.2 -n adidas-production'
       }
       
       stage('Run Smoke Tests') {
