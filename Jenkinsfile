@@ -11,8 +11,8 @@ node {
     ])
 	
 	stage('Checkout SCM') {
-	            steps { checkout scm
-				}
+	    checkout scm
+				
 	}
     stage('Initialize Keptn') {
 
@@ -22,69 +22,45 @@ node {
     }
       
       stage('Show Distribution') {
-         steps {
             sh 'cat /etc/issue'
-         }
       }
       
       stage('Download Kubectl & Config and install') {
-         steps {
             sh 'echo No build required for Webapp.'
             sh 'curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.21.11/bin/linux/amd64/kubectl'
             sh 'chmod +x ./kubectl'
             sh './kubectl version --client'
-         }
       }
       
       stage('Download Helm and install') {
-         steps {
             sh 'echo No build required for Webapp.'
             sh 'curl -LO https://get.helm.sh/helm-v3.6.0-linux-amd64.tar.gz'
             sh 'tar xvf helm-v3.6.0-linux-amd64.tar.gz'
             sh 'linux-amd64/helm version'
-         }
       }
-	  
-	   /* stage('Build Image') {
-         steps {
-           sh 'docker image build -t ${REPOSITORY_TAG} .'
-         }
-      } */
       
       stage('Test Image') {
-         steps {
            sh 'echo "Testing..."'
-         }
       }
       
       stage('Push Image') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
       
       stage('Deploy to Dev Environment') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
       
       stage('Run Load Tests') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
       
       stage('Deploy To Pre-Prod') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
       
       stage('Integration Tests') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
 	  
     stage('Trigger Quality Gate') {
@@ -108,20 +84,15 @@ node {
     }
 	
 	stage('Release') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
 	  
 	stage('Deploy to Production') {
-          steps {
-            sh './kubectl --kubeconfig=./config apply -f deploy.yaml'
-          }
+			sh 'alias kubectl="./kubectl --kubeconfig=keptn/config"'
+            sh 'kubectl rollout restart deployment glass'
       }
       
       stage('Run Smoke Tests') {
-         steps {
            sh 'echo "Image is pushed to the docker repository."'
-         }
       }
 }
