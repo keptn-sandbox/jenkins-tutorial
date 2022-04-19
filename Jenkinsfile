@@ -42,7 +42,7 @@ node {
 	     stage('Download Helm') {
             sh 'curl -LO https://github.com/digitalocean/doctl/releases/download/v1.72.0/doctl-1.72.0-linux-amd64.tar.gz'
             sh 'tar xvf doctl-1.72.0-linux-amd64.tar.gz'
-            sh './doctl auth init -t "dop_v1_b2c86bdc13cfd3f051dd67e9eac38f2c9db5526466cc132f4442b5735cb9103e"'
+            sh './doctl auth init -t "dop_v1_ed55c492c72fad44b3faaadd56bfecdca076453a7a68e9a60697b942cbab364c"'
       }
       
       stage('Test Image') {
