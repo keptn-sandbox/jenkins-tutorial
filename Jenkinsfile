@@ -9,20 +9,18 @@ node {
         parameters([
          string(defaultValue: 'adidas', description: 'Name of your Keptn Project for Quality Gate Feedback ', name: 'Project', trim: false), 
          string(defaultValue: 'staging', description: 'Stage in your Keptn project used for for Quality Gate Feedback', name: 'Stage', trim: false), 
-         string(defaultValue: 'glass', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false),
-         string(name: 'custom_var', defaultValue: '')
+         string(defaultValue: 'glass', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false)
         ])
     ])
     
 	stage('Checkout SCM') {
-	    checkout scm
-				
+	    checkout scm			
 	}
+
     stage('Initialize Keptn') {
 
         // Initialize the Keptn Project - ensures the Keptn Project is created with the passed shipyard
         keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", keptnConfigureMonitoring:"prometheus" // , shipyard:'shipyard.yaml'
-
     }
       
     stage('Download Kubectl & Config and install') {
@@ -44,9 +42,8 @@ node {
         sh 'curl -LO https://github.com/digitalocean/doctl/releases/download/v1.72.0/doctl-1.72.0-linux-amd64.tar.gz'
         sh 'tar xvf doctl-1.72.0-linux-amd64.tar.gz'
         sh './doctl auth init -t $doctl'
-    }
-            
         }
+    }
     
     stage('Test Image') {
         sh 'echo "Testing..."'
