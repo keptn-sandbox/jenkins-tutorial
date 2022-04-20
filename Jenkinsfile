@@ -1,15 +1,19 @@
+#!/usr/bin/env groovy
+
 @Library('keptn-library@3.5')_
 def keptn = new sh.keptn.Keptn()
+def result = ''
 
 node {
     properties([
         parameters([
          string(defaultValue: 'adidas', description: 'Name of your Keptn Project for Quality Gate Feedback ', name: 'Project', trim: false), 
          string(defaultValue: 'staging', description: 'Stage in your Keptn project used for for Quality Gate Feedback', name: 'Stage', trim: false), 
-         string(defaultValue: 'glass', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false)
+         string(defaultValue: 'glass', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false),
+         string(name: 'custom_var', defaultValue: '')
         ])
     ])
-	
+    
 	stage('Checkout SCM') {
 	    checkout scm
 				
@@ -81,28 +85,35 @@ node {
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
     }
+
     stage('Wait for Result') {
         waitTime = 3
 
         if(waitTime > 0) {
             echo "Waiting until Keptn is done and returns the results"
-            def result = keptn.waitForEvaluationDoneEvent setBuildResult:true, waitTime:waitTime
+            result = keptn.waitForEvaluationDoneEvent setBuildResult:true, waitTime:waitTime
             echo "${result}"
         } else {
             echo "Not waiting for results. Please check the Keptns bridge for the details!"
         }
-    }
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "exit 1"
+
+    }}
 	
+	if(result=='pass')
 	stage('Release') {
            sh 'echo "Image is pushed to the docker repository."'
       }
-	  
+      
+	if(result=='pass')  
 	stage('Deploy to Production') {
            sh 'echo "Image is pushed to the docker repository."'
            sh './kubectl set image deployment.v1.apps/glass glass=docker.io/keptnexamples/carts:0.13.2 -n adidas-production'
       }
       
-      stage('Run Smoke Tests') {
+     if(result=='pass') 
+     stage('Run Smoke Tests') {
            sh 'echo "Image is pushed to the docker repository."'
       }
-}
+    }
